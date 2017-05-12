@@ -26,6 +26,8 @@ $ sudo docker run \
 $ xdg-open http://localhost:3000
 ```
 
+Let's see how [the manual installation](https://rocket.chat/docs/installation/manual-installation/centos ) looks like.
+
 
 ## Setup
 
@@ -135,11 +137,14 @@ $ mkdir -p layered-image && \
 $ mc ./layered-image
 ```
 
+I hope it's clear that images are not containers.
+
 
 ### Containers
 
+Containers are made of a writable layer on top of an image. Once you start a container, it's also a traditional linux process.
 
-
+TBD
 
 
 ## Next steps
