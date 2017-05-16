@@ -157,6 +157,10 @@ $ ls -lha ./image
 
 But you said layered!
 
+![Layers](https://docs.docker.com/engine/userguide/storagedriver/images/container-layers.jpg)
+
+Source: https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
+
 ```
 $ mkdir -p layered-image && \
   sudo docker save rocket.chat | tar -x -C ./layered-image
