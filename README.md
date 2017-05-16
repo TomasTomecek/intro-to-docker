@@ -207,6 +207,14 @@ What about the writable layer thingy?
 $ sudo docker diff toy
 ```
 
+Okay, so what about persistent data? How do I run database inside container?
+
+```
+$ sudo docker start mongo
+$ sudo docker inspect mongo | grep Mounts
+$ sudo ls -lha /var/lib/docker/volumes/...
+```
+
 
 ## Next steps
 
