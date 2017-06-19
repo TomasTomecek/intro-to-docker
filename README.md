@@ -168,8 +168,8 @@ $ sudo docker run -dit -p 8000:80 --name our-httpd -v "$PWD":/usr/local/apache2/
 The answer:
 
 ```
-$ export docker="sudo docker"
-$ export d="sudo docker"
+$ alias docker="sudo docker"
+$ alias d="sudo docker"
 ```
 
 The other answer:
