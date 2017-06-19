@@ -268,6 +268,6 @@ Feel free to open an issue or send a pull request.
 ## Next steps
 
  * Have a beer.
- * Listen [Vasek](https://github.com/vpavlin/)'s talk.
+ * Listen [Vasek](https://github.com/vpavlin/)'s [talk](https://docs.google.com/presentation/d/1IkN0L6idjsirq25PLK7Mb9UYSJ6VJRH4QLcTKpa9wGA/edit?usp=sharing).
  * [Managing containers using ansible](https://github.com/pschiffe/ansible-docker)
  * [Advanced container deep-dive](https://tomastomecek.github.io/devconf-container-roadshow-2017/#/)
