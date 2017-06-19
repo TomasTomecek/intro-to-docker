@@ -1,6 +1,6 @@
-# intro-to-docker
+# Practical introdcution to containers
 
-This is an introductory workshop to Docker. It is meant to be suited to everyone: from beginners to intermediate users.
+This is an introductory workshop to Docker. It is meant to be suited for everyone: from beginners to intermediate users.
 
 
 ## Motivation
@@ -13,7 +13,7 @@ Let's see how would [the manual installation](https://rocket.chat/docs/installat
 
 That's pretty complicated, is there an easier way?
 
-We can do it by running these two commands:
+We can run rocket.chat just by executing these two commands:
 
 ```
 $ sudo docker run \
@@ -65,14 +65,6 @@ Is it really running?
 
 ```
 $ sudo docker version
-```
-
-Why `sudo`?
-
-```
-$ ls -lha /run/docker.sock
-
-$ sudo docker run -ti -v /:/hostfs registry.fedoraproject.org/fedora:26 bash
 ```
 
 
@@ -239,7 +231,7 @@ $ sudo docker logs -f other-mongo
 $ sudo docker run -dit --name our-httpd -v "$PWD":/usr/local/apache2/htdocs/ httpd:2.4
 ```
 
-I want to expose to internet:
+I want to access the web server from internet.
 
 ```
 $ sudo docker rm our-httpd
@@ -248,7 +240,34 @@ $ sudo docker run -dit -p 8000:80 --name our-httpd -v "$PWD":/usr/local/apache2/
 ```
 
 
+#### ...get rid of sudo? And why are you using it?
+
+The answer:
+
+```
+$ export docker="sudo docker"
+$ export d="sudo docker"
+```
+
+The other answer:
+
+```
+$ ls -lha /run/docker.sock
+
+$ sudo docker run -ti -v /:/hostfs registry.fedoraproject.org/fedora:26 bash
+```
+
+
+## Feedback
+
+I am interested in hearing your feedback! This presentation is still a prototype. What would you change?
+
+Feel free to open an issue or send a pull request.
+
+
 ## Next steps
 
+ * Have a beer.
+ * Listen [Vasek](https://github.com/vpavlin/)'s talk.
  * [Managing containers using ansible](https://github.com/pschiffe/ansible-docker)
  * [Advanced container deep-dive](https://tomastomecek.github.io/devconf-container-roadshow-2017/#/)
