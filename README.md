@@ -5,7 +5,13 @@ This is an introductory workshop to Docker. It is meant to be suited to everyone
 
 ## Motivation
 
-Let's say we want to deploy our own instance of [Rocket.chat](https://rocket.chat/) ([demo](https://demo.rocket.chat/home)).
+We've just found this new messaging app — [Rocket.chat](https://rocket.chat/) ([demo](https://demo.rocket.chat/home)) and we want to run it on our server.
+
+Let's see how would [the manual installation](https://rocket.chat/docs/installation/manual-installation/centos) look like.
+
+---
+
+That's pretty complicated, is there an easier way?
 
 We can do it by running these two commands:
 
@@ -30,12 +36,12 @@ Rocket.chat is now running inside docker containers and we can check it out:
 $ xdg-open http://localhost:3000
 ```
 
-Let's see how would [the manual installation](https://rocket.chat/docs/installation/manual-installation/centos) look like.
 
+## Setting up docker locally
 
-## Setup
-
-CentOS users are advised to use `yum` package manager, Fedora users should run `dnf`.
+CentOS users are advised to use `yum` package manager, Fedora users should run
+`dnf`. Users of other linux distributions and operating systems are on their
+own.
 
 So let's install docker:
 
@@ -70,15 +76,28 @@ $ sudo docker run -ti -v /:/hostfs registry.fedoraproject.org/fedora:26 bash
 ```
 
 
+## Tell me more about docker
+
+Docker is a platform to manage complete lifecycle of applications including
+building, packaging, running, distributing, deploying, scaling. Docker uses
+linux containers for running applications and its own format to distribute the
+application images.
+
+Docker tool is using client & server architecture:
+
+![Docker architecture](http://nordicapis.com/wp-content/uploads/Docker-API-infographic-container-devops-nordic-apis.png)
+
+Source: http://nordicapis.com/api-driven-devops-spotlight-on-docker/
+
+
 ## Let's explore
 
-We can run bash inside a container:
+We can start our journey by launching a shell prompt inside a container. Let's have a closer look at the rocket.chat container:
 
 ```
 $ sudo docker exec -ti rocket bash
 
 $ cat /etc/os-release
-$ cat /etc/issue
 $ ps aux
 ```
 
@@ -105,19 +124,6 @@ $ ip a
 ```
 
 
-## Tell me more about docker
-
-Docker is a platform to manage complete lifecycle of applications including
-building, packaging, running, deploying, scaling. Docker uses linux containers
-for running applications and its own format to distribute the applications.
-
-Docker tool is using client & server architecture:
-
-![Docker architecture](http://nordicapis.com/wp-content/uploads/Docker-API-infographic-container-devops-nordic-apis.png)
-
-Source: http://nordicapis.com/api-driven-devops-spotlight-on-docker/
-
-
 ### Images
 
 Container images are a method to distribute applications. They are being built
@@ -133,22 +139,13 @@ Huh, what?
 
 Okay, let's take it step by step.
 
-First we need to download the image from the registry:
+First we need to download the image from the registry, that's what we already
+did when we ran the rocket.chat container.
+
+Let's inspect the filesystem tree now:
 
 ```
-$ sudo docker pull fedora:25
-```
-
-or
-
-```
-$ sudo docker pull registry.fedoraproject.org/fedora:26
-```
-
-Let's inspect the filesystem tree
-
-```
-$ sudo docker create --name image-content fedora:25 false && \
+$ sudo docker create --name image-content rocket.chat /bin/false && \
   mkdir -p ./image && \
   sudo docker export image-content | tar -x -C ./image
 
@@ -207,12 +204,47 @@ What about the writable layer thingy?
 $ sudo docker diff toy
 ```
 
-Okay, so what about persistent data? How do I run database inside container?
+
+### Okay, so how do I...
+
+#### ...store data persistently? How do I run a database inside a container?
 
 ```
 $ sudo docker start mongo
 $ sudo docker inspect mongo | grep Mounts
-$ sudo ls -lha /var/lib/docker/volumes/...
+```
+
+```
+$ sudo docker run -d --name=other-mongo \
+                  -v /etc/localtime:/etc/localtime:ro \
+                  -v $PWD/mongo-data:/data/db mongo:3.4
+```
+
+Ehm, can we have some output please?
+
+```
+$ sudo docker logs other-mongo
+```
+
+I meant what's going on right now!
+
+```
+$ sudo docker logs -f other-mongo
+```
+
+
+#### ...run a web service?
+
+```
+$ sudo docker run -dit --name our-httpd -v "$PWD":/usr/local/apache2/htdocs/ httpd:2.4
+```
+
+I want to expose to internet:
+
+```
+$ sudo docker rm our-httpd
+
+$ sudo docker run -dit -p 8000:80 --name our-httpd -v "$PWD":/usr/local/apache2/htdocs/ httpd:2.4
 ```
 
 
