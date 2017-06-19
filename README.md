@@ -82,83 +82,6 @@ Docker tool is using client & server architecture:
 Source: http://nordicapis.com/api-driven-devops-spotlight-on-docker/
 
 
-## Let's explore
-
-We can start our journey by launching a shell prompt inside a container. Let's have a closer look at the rocket.chat container:
-
-```
-$ sudo docker exec -ti rocket bash
-
-$ cat /etc/os-release
-$ ps aux
-```
-
-Let's go back to host.
-
-How does the container look?
-
-```
-$ htop
-```
-
-What are the technologies containers are using?
-
-```
-$ sudo docker run -ti --rm registry.fedoraproject.org/fedora:26 bash
-
-$ dnf install -y procps-ng iproute
-
-$ ls -lha /proc/self/ns/
-$ mount
-$ ps aux
-$ hostname
-$ ip a
-```
-
-
-### Images
-
-Container images are a method to distribute applications. They are being built
-using docker, then uploaded to docker registries so they can be distrbuted.
-
-Here's [the rocket.chat image](https://hub.docker.com/r/_/rocket.chat/) inside
-Docker Hub, the registry provided by Docker Inc.
-
-Images are composed of metadata and layered filesystem trees. These filesystem
-trees contain your service or application plus all its dependencies.
-
-Huh, what?
-
-Okay, let's take it step by step.
-
-First we need to download the image from the registry, that's what we already
-did when we ran the rocket.chat container.
-
-Let's inspect the filesystem tree now:
-
-```
-$ sudo docker create --name image-content rocket.chat /bin/false && \
-  mkdir -p ./image && \
-  sudo docker export image-content | tar -x -C ./image
-
-$ ls -lha ./image
-```
-
-But you said layered!
-
-![Layers](https://docs.docker.com/engine/userguide/storagedriver/images/container-layers.jpg)
-
-Source: https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
-
-```
-$ mkdir -p layered-image && \
-  sudo docker save rocket.chat | tar -x -C ./layered-image
-$ mc ./layered-image
-```
-
-I hope it's clear that images are not containers.
-
-
 ### Containers
 
 Containers are made of a writable layer on top of an image. Once you start a
@@ -256,6 +179,83 @@ $ ls -lha /run/docker.sock
 
 $ sudo docker run -ti -v /:/hostfs registry.fedoraproject.org/fedora:26 bash
 ```
+
+
+## Let's explore
+
+We can start our journey by launching a shell prompt inside a container. Let's have a closer look at the rocket.chat container:
+
+```
+$ sudo docker exec -ti rocket bash
+
+$ cat /etc/os-release
+$ ps aux
+```
+
+Let's go back to host.
+
+How does the container look?
+
+```
+$ htop
+```
+
+What are the technologies containers are using?
+
+```
+$ sudo docker run -ti --rm registry.fedoraproject.org/fedora:26 bash
+
+$ dnf install -y procps-ng iproute
+
+$ ls -lha /proc/self/ns/
+$ mount
+$ ps aux
+$ hostname
+$ ip a
+```
+
+
+### Images
+
+Container images are a method to distribute applications. They are being built
+using docker, then uploaded to docker registries so they can be distrbuted.
+
+Here's [the rocket.chat image](https://hub.docker.com/r/_/rocket.chat/) inside
+Docker Hub, the registry provided by Docker Inc.
+
+Images are composed of metadata and layered filesystem trees. These filesystem
+trees contain your service or application plus all its dependencies.
+
+Huh, what?
+
+Okay, let's take it step by step.
+
+First we need to download the image from the registry, that's what we already
+did when we ran the rocket.chat container.
+
+Let's inspect the filesystem tree now:
+
+```
+$ sudo docker create --name image-content rocket.chat /bin/false && \
+  mkdir -p ./image && \
+  sudo docker export image-content | tar -x -C ./image
+
+$ ls -lha ./image
+```
+
+But you said layered!
+
+![Layers](https://docs.docker.com/engine/userguide/storagedriver/images/container-layers.jpg)
+
+Source: https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
+
+```
+$ mkdir -p layered-image && \
+  sudo docker save rocket.chat | tar -x -C ./layered-image
+$ mc ./layered-image
+```
+
+I hope it's clear that images are not containers.
 
 
 ## Feedback
